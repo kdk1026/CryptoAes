@@ -31,10 +31,10 @@ public class TestController {
 	public ModelAndView main() {
 		ModelAndView mav = new ModelAndView();
 
-		String encryptedText = AesCrypto.encrypt(secretKey, iv, "hello");
+		String encryptedText = AesCrypto.getInstance().encrypt(secretKey, iv, "hello");
 		mav.addObject("encryptedText", encryptedText);
 
-		String decryptedText = AesCrypto.decrypt(secretKey, iv, encryptedText);
+		String decryptedText = AesCrypto.getInstance().decrypt(secretKey, iv, encryptedText);
 		mav.addObject("decryptedText", decryptedText);
 
 		mav.setViewName("main");

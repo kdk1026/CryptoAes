@@ -21,10 +21,22 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class AesCrypto {
 
-	private static final String AES_CBC_PKCS5PADDING ="AES/CBC/PKCS5Padding";
-	private static final String CHARSET = StandardCharsets.UTF_8.toString();
+	private AesCrypto() {
+		super();
+	}
 
-	public static String encrypt(String secretKey, String iv, String text) {
+	private static class LazyHolder {
+		private static final AesCrypto INSTANCE = new AesCrypto();
+	}
+
+	public static AesCrypto getInstance() {
+		return LazyHolder.INSTANCE;
+	}
+
+	private final String AES_CBC_PKCS5PADDING ="AES/CBC/PKCS5Padding";
+	private final String CHARSET = StandardCharsets.UTF_8.toString();
+
+	public String encrypt(String secretKey, String iv, String text) {
 		try {
 			SecretKey secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "AES");
 
@@ -40,7 +52,7 @@ public class AesCrypto {
 		}
 	}
 
-	public static String decrypt(String secretKey, String iv, String encryptedText) {
+	public String decrypt(String secretKey, String iv, String encryptedText) {
 		try {
 			SecretKey secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "AES");
 

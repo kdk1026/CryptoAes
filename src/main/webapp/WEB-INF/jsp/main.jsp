@@ -8,35 +8,6 @@
 <title>Insert title here</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
-
-<script>
-const encrypt = (secretKey, iv, text) => {
-    const cipher = CryptoJS.AES.encrypt(text, CryptoJS.enc.Utf8.parse(secretKey), {
-        iv: CryptoJS.enc.Utf8.parse(iv),
-        padding: CryptoJS.pad.Pkcs7,
-        mode: CryptoJS.mode.CBC,
-    });
-
-    return cipher.toString();
-}
-
-const decrypt = (secretKey, iv, encryptedText) => {
-    const decipher = CryptoJS.AES.decrypt(encryptedText, CryptoJS.enc.Utf8.parse(secretKey), {
-        iv: CryptoJS.enc.Utf8.parse(iv),
-        padding: CryptoJS.pad.Pkcs7,
-        mode: CryptoJS.mode.CBC,
-    })
-
-    return decipher.toString(CryptoJS.enc.Utf8);
-}
-
-/*
- 	Front의 경우, CDN 대신
- 		npm install crypto-js
- 		import CryptoJS from "crypto-js";
- */
-</script>
-
 </head>
 <body>
 
@@ -49,14 +20,16 @@ const decrypt = (secretKey, iv, encryptedText) => {
 		<div>JavaScript 복호화 : <span id="deText"></span></div>
 	</div>
 
-	<script>
+	<script type="module">
+		import * as aesCrypto from "/js/module/aesCrypto.js";
+
 		const secretKey = '<spring:eval expression="@environment.getProperty('aes.secret.key')" />';
 		const iv = '<spring:eval expression="@environment.getProperty('aes.iv')" />';
 
-		const encryptedText = encrypt(secretKey, iv, 'hello');
+		const encryptedText = aesCrypto.encrypt(secretKey, iv, 'hello');
 		document.querySelector('#enText').innerText = encryptedText;
 
-		const decryptedText = decrypt(secretKey, iv, encryptedText);
+		const decryptedText = aesCrypto.decrypt(secretKey, iv, encryptedText);
 		document.querySelector('#deText').innerText = decryptedText;
 	</script>
 
